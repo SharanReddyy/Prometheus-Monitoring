@@ -25,4 +25,10 @@ We need to define what has to be scraped in the prometheus configuration file. H
 
 To troubleshoot, we can check the status of pods to check if all the required pods are running. Any problem with the pod can be further checked by checking the logs of the pod.
 
+## Challenges:
+
+1. Initially I was only using node-exporter and later discovered the kube-state-metrics explorer.
+
+2. After configuring the exporters, I could see data only from the node-exporter but not kube-state-metrics although it was detected in the targets in prometheus. I reconfigured to properly scrape using kube-state-metrics and it was fixed. 
+
 

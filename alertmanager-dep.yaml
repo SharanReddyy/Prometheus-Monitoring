@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.22.2
+        args:
+          - '--config.file=/etc/alertmanager/config.yaml'
+          - '--storage.path=/alertmanager'
+        volumeMounts:
+        - name: alertmanager-config
+          mountPath: /etc/alertmanager
+          readOnly: true
+      volumes:
+      - name: alertmanager-config
+        configMap:
+          name: alertmanager-config
+

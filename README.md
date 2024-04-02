@@ -25,10 +25,21 @@ We need to define what has to be scraped in the prometheus configuration file. H
 
 To troubleshoot, we can check the status of pods to check if all the required pods are running. Any problem with the pod can be further checked by checking the logs of the pod.
 
-## Challenges:
+## Challenges faced:
 
-1. Initially I was only using node-exporter and later discovered the kube-state-metrics explorer.
+1. Initial Kubernetes namespace mismatch: Initially I had some confusion with namespaces and some different objects were running in different namespaces which prevented the applications from working properly.
 
-2. After configuring the exporters, I could see data only from the node-exporter but not kube-state-metrics although it was detected in the targets in prometheus. I reconfigured to properly scrape using kube-state-metrics and it was fixed. 
+Solution: I moved all the objects to the default namespace to avoid any confusion.
 
+2. Metrics Not Detected: Although targets in prometheus was showing both nodeport exporter and kube-state-metrics are up, only metrics scraped by NodeExporter were displayed in Prometheus.
+
+Solution: I rewrote the prometheus configuration file to properly scrape cluster level metrics to fix the error. I rechecked the service names, namespaces, endpoints and other details in the configuration file to ensure it works properly.
+
+3. Pod Creation Error: Grafana pods failing to create because of an invalid image I initially provided.
+
+Solution: I then provided another image that I verified beforehand to make sure it works as intended. 
+
+4. NodePort Configurations: NodePorts were not properly exposed causing problems to access the UI for Prometheus and Grafana.
+
+Solution: I reconfigured the services to properly map the ports to nodeports and corrrect selectors to ensure the UI is accessible.   
 
